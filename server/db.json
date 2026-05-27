@@ -1,0 +1,417 @@
+{
+  "flows": [
+    {
+      "id": "flow-demo-cognitfy",
+      "name": "Flujo demos Cognitfy",
+      "description": "Proceso de ventas desde referencia hasta demo en producción.",
+      "color": "#378ADD",
+      "createdAt": "2026-05-26T00:00:00.000Z",
+      "updatedAt": "2026-05-27T13:48:05.221Z",
+      "references": [
+        {
+          "id": "ref-1",
+          "title": "Playbook de ventas",
+          "url": "https://docs.example.com/playbook",
+          "note": "Guía de etapas y mensajes clave"
+        },
+        {
+          "id": "ref-2",
+          "title": "Plantilla de briefing",
+          "url": "https://docs.example.com/briefing",
+          "note": "Documento que envía Bradley al cliente"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "a1",
+          "type": "actor",
+          "title": "Equipo de ventas",
+          "sub": "Encargados de captar potenciales clientes y derivarlos a bradley",
+          "x": 120,
+          "y": 71.88888549804688,
+          "emailNotification": {
+            "enabled": true,
+            "recipient": "bradley",
+            "notifyAbout": "todos los datos referentes al cliente, grabaciones de reuniones, informacion relevante",
+            "email": "administracion@useteam.io"
+          },
+          "stepOrder": 1
+        },
+        {
+          "id": "a2",
+          "type": "actor",
+          "title": "Bradley",
+          "sub": "Reunion ventas - se pone en contexto al cliente sobre el producto y se inicializa el proceso de REUNION > CLIENTE ACEPTA > SE LE OTORGA BRIEFING",
+          "x": 115.5,
+          "y": 449.7421875,
+          "stepOrder": 2
+        },
+        {
+          "id": "p1",
+          "type": "step",
+          "title": "Reunion de ventas",
+          "sub": "Bradley y el cliente. Primer contacto.",
+          "x": 728,
+          "y": 325,
+          "emailNotification": {
+            "enabled": false,
+            "recipient": "",
+            "notifyAbout": "",
+            "email": ""
+          },
+          "stepOrder": 3
+        },
+        {
+          "id": "p2",
+          "type": "step",
+          "title": "Cliente acepta",
+          "sub": "Quiere continuar con la demo",
+          "x": 1218.4444580078125,
+          "y": 318.88885498046875,
+          "stepOrder": 4
+        },
+        {
+          "id": "p3",
+          "type": "step",
+          "title": "Briefing enviado",
+          "sub": "Bradley entrega briefing al cliente",
+          "x": 1703.77783203125,
+          "y": 314.607666015625,
+          "stepOrder": 6
+        },
+        {
+          "id": "n1",
+          "type": "notif",
+          "title": "Recordatorio 1 - Plazo 7 dias",
+          "sub": "Se envia email notificando sistema de recordatorios - se otorga codigo de seguimiento",
+          "x": 1599.8888549804688,
+          "y": 542.4443969726562,
+          "emailNotification": {
+            "recipient": "Al potencial cliente",
+            "notifyAbout": "El sistema de recordatorios, se le otorga el codigo de seguimiento y se le explica el proceso completo de recepcion del briefing y creacion del documento de requerimientos.",
+            "email": "cliente1example@gmail.com",
+            "enabled": true
+          },
+          "stepOrder": 7
+        },
+        {
+          "id": "n2",
+          "type": "notif",
+          "title": "Recordatorio 2 - Plazo 5 días",
+          "sub": "Se informa recordatorio mencionando que luego del 3er recordatorio la demo corre riesgo de ser cancelada",
+          "x": 1508.5556030273438,
+          "y": 800.888916015625,
+          "emailNotification": {
+            "recipient": "al potencial cliente",
+            "notifyAbout": "repaso del sistema de recordatorios, que estamos a su disposicion y que si necesita mas tiempo o ayuda para llenar el briefing nos lo haga saber.",
+            "email": "cliente1example@gmail.com",
+            "enabled": true
+          },
+          "stepOrder": 8
+        },
+        {
+          "id": "d1",
+          "type": "state",
+          "title": "Responde el briefing?",
+          "sub": "Decision tras recordatorios",
+          "x": 1770.77783203125,
+          "y": 1303.9409790039062,
+          "stepOrder": 10
+        },
+        {
+          "id": "r1",
+          "type": "cancel",
+          "title": "Sin respuesta - cancelada",
+          "sub": "Demo cancelada por falta de respuesta - NOTIFICACION POR EMAIL AL POTENCIAL CLIENTE",
+          "x": 145,
+          "y": 1289.9999389648438,
+          "emailNotification": {
+            "recipient": "al potencial cliente y la directiva USETEAM",
+            "notifyAbout": "la demo esta cancelada. definir en reunion el cuerpo de este mensaje. Pasar la demo a estado cancelado, guardar metrica en herramienta de gestion y notificar a todos los miembros de la directiva el evento.",
+            "email": "todos-los-emails-de-directiva@useteam.io",
+            "enabled": true
+          },
+          "stepOrder": 11
+        },
+        {
+          "id": "s2",
+          "type": "step",
+          "title": "Verificacion de viabilidad",
+          "sub": "Equipo tecnico: Se mide alcance, desafios y plazos, si se considera viable, se realiza documento de requerimientos y se le otorga al cliente para validación - PROCESO REALIZADO POR BRADLEY",
+          "x": 2420,
+          "y": 322,
+          "stepOrder": 12
+        },
+        {
+          "id": "s4",
+          "type": "state",
+          "title": "Estado EN CURSO",
+          "sub": "Equipo asignado. Desarrollo activo. Esto modifica el estado de seguimiento en web COGNITFY y se le envia un email al cliente notificandole que la demo esta en curso con información que consideremos relevante",
+          "x": 3059.333251953125,
+          "y": 743.6666259765625,
+          "emailNotification": {
+            "recipient": "al potencial cliente",
+            "notifyAbout": "su demo esta en curso, ademas de definir la informacion que contendra este email, cambiara el estado de seguimiento en la web de cognitfy",
+            "email": "cliente1example@gmail.com",
+            "enabled": true
+          },
+          "stepOrder": 14
+        },
+        {
+          "id": "s8",
+          "type": "state",
+          "title": "Demo con el cliente",
+          "sub": "Presentacion final al cliente",
+          "x": 4802.9998779296875,
+          "y": 774.8958435058594,
+          "emailNotification": {
+            "recipient": "al potencial cliente",
+            "notifyAbout": "Agendar fecha y hora de reunion para demo de producto",
+            "email": "cliente1example@gmail.com",
+            "enabled": true
+          },
+          "stepOrder": 17
+        },
+        {
+          "id": "e4",
+          "type": "endok",
+          "title": "Activo en produccion",
+          "sub": "Desplegado para usuarios piloto",
+          "x": 4766.8331298828125,
+          "y": 1422.2421875,
+          "stepOrder": 20
+        },
+        {
+          "id": "node-6fdb6931",
+          "type": "notif",
+          "title": "Recordatorio 3 - Plazo 4 días",
+          "sub": "Se le indica al cliente que si necesita mas tiempo para responder nos lo haga saber, pero que al terminar el plazo la demo corre riesgo de ser cancelada.",
+          "x": 1329.1112060546875,
+          "y": 1070.5556335449219,
+          "emailNotification": {
+            "recipient": "al potencial cliente",
+            "notifyAbout": "tiene un plazo de 4 dias sino la demo corre riesgo de ser cancelada, repaso del proceso, informacion que consideremos relevante",
+            "email": "cliente1example@gmail.com",
+            "enabled": true
+          },
+          "stepOrder": 9
+        },
+        {
+          "id": "node-6555342c",
+          "type": "step",
+          "title": "Estado VACANTE",
+          "sub": "Una vez el proyecto viable se cambia el estado a vacante y esto modifica el estado de seguimiento en web COGNITFY",
+          "x": 2406.0001220703125,
+          "y": 767.8958740234375,
+          "stepOrder": 13
+        },
+        {
+          "id": "node-4bd4a11f",
+          "type": "state",
+          "title": "Estado PENDIENTE DEMO TECNICA",
+          "sub": "Reunion para que la directiva tecnica valide el cumplimiento de todos los requisitos funcionales de la demo y considere pasar a demo comercial",
+          "x": 3652.1666259765625,
+          "y": 754.380126953125,
+          "stepOrder": 15
+        },
+        {
+          "id": "node-718de7b2",
+          "type": "state",
+          "title": "Estado PENDIENTE DEMO COMERCIAL",
+          "sub": "Reunion con fran para validar todos los requisitos de producto, UX y ajustes finos previo a demo con el cliente",
+          "x": 4152,
+          "y": 757,
+          "stepOrder": 16
+        },
+        {
+          "id": "node-cd5675a0",
+          "type": "endok",
+          "title": "Estado COMPLETADO",
+          "sub": "Demo alojada en GITHUB en repositorio sin despliegue a espera de proximos pasos",
+          "x": 3591,
+          "y": 1220.125,
+          "stepOrder": 19
+        },
+        {
+          "id": "node-f7fb505f",
+          "type": "notif",
+          "title": "Estado TERMINADO FALTA DESPLEGAR",
+          "sub": "Calendario de despliegues disponible en herramienta de gestion",
+          "x": 4513.5,
+          "y": 1112.7578125,
+          "stepOrder": 18
+        },
+        {
+          "id": "node-997c21a8",
+          "type": "cancel",
+          "title": "Cliente no acepta",
+          "sub": "El potencial cliente no acepta continuar con el proceso, se le hace una serie de preguntas y se guarda la metrica correspondiente con la informacion resultante. Se guarda la informacion para informes a futuro y tener registro por si el cliente mas adelante quiere re-intentar inscribirse al proceso de cognitfy",
+          "x": 1217.3887939453125,
+          "y": 10,
+          "stepOrder": 5
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "from": "a1",
+          "to": "a2",
+          "color": "#378ADD",
+          "label": "Deriva cliente"
+        },
+        {
+          "id": "e2",
+          "from": "a2",
+          "to": "p1",
+          "color": "#378ADD"
+        },
+        {
+          "id": "e3",
+          "from": "p1",
+          "to": "p2",
+          "color": "#E88A20"
+        },
+        {
+          "id": "e4",
+          "from": "p2",
+          "to": "p3",
+          "color": "#E88A20"
+        },
+        {
+          "id": "e5",
+          "from": "p3",
+          "to": "n1",
+          "color": "#BA7517"
+        },
+        {
+          "id": "e6",
+          "from": "n1",
+          "to": "n2",
+          "color": "#BA7517"
+        },
+        {
+          "id": "e8",
+          "from": "d1",
+          "to": "r1",
+          "color": "#E24B4A",
+          "dash": true,
+          "label": "No responde"
+        },
+        {
+          "id": "e9",
+          "from": "d1",
+          "to": "s2",
+          "color": "#E88A20",
+          "label": "Responde briefing"
+        },
+        {
+          "id": "edge-6a81d4b8",
+          "from": "node-6fdb6931",
+          "to": "d1",
+          "color": "#BA7517",
+          "dash": false
+        },
+        {
+          "id": "edge-cc95a751",
+          "from": "node-6fdb6931",
+          "to": "n2",
+          "color": "#BA7517",
+          "dash": false
+        },
+        {
+          "id": "edge-1c06d019",
+          "from": "node-6555342c",
+          "to": "s4",
+          "color": "#1D9E75",
+          "dash": false
+        },
+        {
+          "id": "edge-c5c59db1",
+          "from": "node-6555342c",
+          "to": "s2",
+          "color": "#1D9E75",
+          "dash": false
+        },
+        {
+          "id": "edge-24b9fb17",
+          "from": "s4",
+          "to": "node-4bd4a11f",
+          "color": "#7F77DD",
+          "dash": false
+        },
+        {
+          "id": "edge-3e545c6a",
+          "from": "node-4bd4a11f",
+          "to": "node-718de7b2",
+          "color": "#7F77DD",
+          "dash": false
+        },
+        {
+          "id": "edge-8d1345eb",
+          "from": "node-718de7b2",
+          "to": "s8",
+          "color": "#7F77DD",
+          "dash": false
+        },
+        {
+          "id": "edge-fb36e40e",
+          "from": "node-718de7b2",
+          "to": "node-cd5675a0",
+          "color": "#E24B4A",
+          "label": "CONVENIDO EN REUNION DEMO COMERCIAL",
+          "dash": true
+        },
+        {
+          "id": "edge-f94cc8d6",
+          "from": "node-718de7b2",
+          "to": "node-f7fb505f",
+          "color": "#1D9E75",
+          "label": "HERRAMIENTA INTERNA - CLIENTE COGNITFY",
+          "dash": false
+        },
+        {
+          "id": "edge-680de4dd",
+          "from": "s8",
+          "to": "node-f7fb505f",
+          "color": "#1D9E75",
+          "dash": false,
+          "label": "DEMO EXITOSA CON CLIENTE"
+        },
+        {
+          "id": "edge-298dd92f",
+          "from": "node-f7fb505f",
+          "to": "e4",
+          "color": "#378ADD",
+          "label": "PASO POR COLA DE DESPLIEGUES - DESPLEGADO"
+        },
+        {
+          "id": "edge-074d109b",
+          "from": "p1",
+          "to": "node-997c21a8",
+          "color": "#E24B4A",
+          "dash": true
+        }
+      ]
+    },
+    {
+      "name": "nuevo flujo",
+      "description": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "color": "#7F77DD",
+      "createdAt": "2026-05-27T02:29:13.222Z",
+      "updatedAt": "2026-05-27T02:29:13.222Z",
+      "references": [],
+      "nodes": [
+        {
+          "id": "node-24d738e1",
+          "type": "step",
+          "title": "Inicio",
+          "sub": "Arrastra y conecta más pasos",
+          "x": 400,
+          "y": 300
+        }
+      ],
+      "edges": [],
+      "id": "nFEJ-pv"
+    }
+  ]
+}
