@@ -6,7 +6,7 @@ import type { CreateFlowInput } from "../../types/flow";
 type Props = {
   open: boolean;
   onClose: () => void;
-  onCreate: (input: CreateFlowInput) => Promise<void>;
+  onCreate: (input: CreateFlowInput) => Promise<unknown>;
 };
 
 export function CreateFlowDialog({ open, onClose, onCreate }: Props) {

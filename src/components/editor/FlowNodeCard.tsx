@@ -184,6 +184,7 @@ export function FlowNodeCard({
         },
         cancel: {
           label: "Cancelar",
+          onClick: () => {},
         },
       });
       return;
@@ -199,6 +200,7 @@ export function FlowNodeCard({
       },
       cancel: {
         label: "Cancelar",
+        onClick: () => {},
       },
     });
   };
@@ -333,8 +335,12 @@ export function FlowNodeCard({
                 setDraft((d) => ({ ...d, title: e.target.value }))
               }
               onKeyDown={(e) => {
-                if (e.key === "Enter")
-                  e.currentTarget.nextElementSibling?.focus();
+                if (e.key === "Enter") {
+                  const nextInput = e.currentTarget.nextElementSibling as
+                    | HTMLInputElement
+                    | null;
+                  nextInput?.focus();
+                }
                 if (e.key === "Escape") {
                   setDraft({ title: node.title, sub: node.sub });
                   setEditing(false);

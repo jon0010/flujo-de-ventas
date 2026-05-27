@@ -29,6 +29,7 @@ export function Dashboard({ onOpenFlow }: Props) {
       },
       cancel: {
         label: "Cancelar",
+        onClick: () => {},
       },
     });
   };
