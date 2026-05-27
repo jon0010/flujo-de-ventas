@@ -65,7 +65,7 @@ export async function apiFetch<T>(
         throw e;
       }
       const networkErr = new ApiError(
-        "No se pudo conectar con el servidor. ¿Está corriendo npm run dev:all?",
+        "No se pudo conectar con el servidor.",
         0,
       );
       if (attempt < RETRY_ATTEMPTS - 1) {
