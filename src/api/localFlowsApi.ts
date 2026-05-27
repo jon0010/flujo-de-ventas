@@ -1,4 +1,4 @@
-import { createEmptyFlow } from "../data/flowTemplates";
+import { createEmptyFlow, createId } from "../data/flowTemplates";
 import type { CreateFlowInput, Flow } from "../types/flow";
 import { ApiError } from "./client";
 
@@ -37,7 +37,7 @@ export const localFlowsApi = {
   },
 
   async create(input: CreateFlowInput): Promise<Flow> {
-    const created = createEmptyFlow(input);
+    const created: Flow = { id: createId("flow"), ...createEmptyFlow(input) };
     const next = [...readFlows(), created];
     writeFlows(next);
     return created;
