@@ -33,8 +33,8 @@ export function FlowToolbar({
 }: Props) {
   const [label, setLabel] = useState("");
   const [type, setType] = useState<NodeType>("step");
-  const [isNodeSectionOpen, setIsNodeSectionOpen] = useState(true);
-  const [isLinksSectionOpen, setIsLinksSectionOpen] = useState(true);
+  const [isNodeSectionOpen, setIsNodeSectionOpen] = useState(false);
+  const [isLinksSectionOpen, setIsLinksSectionOpen] = useState(false);
 
   return (
     <div className="flow-toolbar">

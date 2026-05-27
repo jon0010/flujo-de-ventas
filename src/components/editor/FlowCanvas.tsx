@@ -8,6 +8,7 @@ import { FlowEdgesLayer } from "./FlowEdgesLayer";
 type Props = {
   flow: Flow;
   tool: CanvasTool;
+  editable: boolean;
   selectedNodeId: string | null;
   selectedEdgeId: string | null;
   connectFromId: string | null;
@@ -27,6 +28,7 @@ type Props = {
 export function FlowCanvas({
   flow,
   tool,
+  editable,
   selectedNodeId,
   selectedEdgeId,
   connectFromId,
@@ -41,9 +43,10 @@ export function FlowCanvas({
   const wrapRef = useRef<HTMLDivElement>(null);
   const panRef = useRef({ active: false, x: 0, y: 0, sl: 0, st: 0 });
   const isSelectTool = tool === "select";
+  const isInteractive = isSelectTool && editable;
 
   const clearSelection = () => {
-    if (!isSelectTool) return;
+    if (!isInteractive) return;
     onSelectNode(null);
     onSelectEdge(null);
   };
@@ -96,7 +99,7 @@ export function FlowCanvas({
       onPointerUp={endPan}
       onPointerCancel={endPan}
     >
-      {connectModeLabel && isSelectTool && (
+      {connectModeLabel && isInteractive && (
         <div className="connect-mode-banner" role="status">
           <span>{connectModeLabel}</span>
           <button type="button" className="btn-link" onClick={onCancelConnect}>
@@ -105,7 +108,7 @@ export function FlowCanvas({
         </div>
       )}
       <div
-        className={["board", !isSelectTool && "board--non-interactive"]
+        className={["board", !isInteractive && "board--non-interactive"]
           .filter(Boolean)
           .join(" ")}
         style={{ width: BOARD_WIDTH, height: BOARD_HEIGHT }}
@@ -137,7 +140,7 @@ export function FlowCanvas({
           nodes={flow.nodes}
           edges={flow.edges}
           selectedEdgeId={selectedEdgeId}
-          interactive={isSelectTool}
+          interactive={isInteractive}
           onSelectEdge={(id) => onSelectEdge(id)}
         />
 
@@ -145,7 +148,7 @@ export function FlowCanvas({
           <FlowNodeCard
             key={node.id}
             node={node}
-            interactive={isSelectTool}
+            interactive={isInteractive}
             selected={selectedNodeId === node.id}
             connectSource={connectFromId === node.id}
             connectTarget={connectToId === node.id}

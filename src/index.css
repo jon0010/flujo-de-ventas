@@ -13,6 +13,56 @@ body {
   min-height: 100vh;
 }
 
+.auth-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.auth-card {
+  width: min(420px, 100%);
+  background: #fff;
+  border: 1px solid #e0ded4;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-card h1 {
+  font-size: 1.2rem;
+  margin-bottom: 0.35rem;
+}
+
+.auth-card p {
+  font-size: 0.9rem;
+  color: #6b6a63;
+  margin-bottom: 0.85rem;
+}
+
+.auth-card label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #5c5b54;
+}
+
+.auth-card input {
+  width: 100%;
+  margin-top: 0.35rem;
+  margin-bottom: 0.85rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #d3d1c7;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.auth-error {
+  margin-bottom: 0.7rem;
+  color: #a32d2d !important;
+  font-size: 0.8rem !important;
+}
+
 /* —— Layout —— */
 .app-shell {
   max-width: 1400px;

@@ -4,7 +4,7 @@ import type { Flow } from "../../types/flow";
 type Props = {
   flow: Flow;
   onOpen: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
 };
 
 export function FlowCard({ flow, onOpen, onDelete }: Props) {
@@ -35,14 +35,16 @@ export function FlowCard({ flow, onOpen, onDelete }: Props) {
           <button type="button" className="btn btn-primary" onClick={onOpen}>
             Abrir flujo
           </button>
-          <button
-            type="button"
-            className="btn btn-ghost btn-danger"
-            onClick={onDelete}
-            aria-label={`Eliminar ${flow.name}`}
-          >
-            Eliminar
-          </button>
+          {onDelete && (
+            <button
+              type="button"
+              className="btn btn-ghost btn-danger"
+              onClick={onDelete}
+              aria-label={`Eliminar ${flow.name}`}
+            >
+              Eliminar
+            </button>
+          )}
         </footer>
       </div>
     </article>

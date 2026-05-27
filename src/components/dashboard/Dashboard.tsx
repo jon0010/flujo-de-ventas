@@ -6,10 +6,12 @@ import { FlowCard } from "./FlowCard";
 import { CreateFlowDialog } from "./CreateFlowDialog";
 
 type Props = {
+  canEdit: boolean;
   onOpenFlow: (id: string) => void;
+  onLogout: () => void;
 };
 
-export function Dashboard({ onOpenFlow }: Props) {
+export function Dashboard({ canEdit, onOpenFlow, onLogout }: Props) {
   const { flows, loading, createFlow, deleteFlow } = useFlows();
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -39,13 +41,20 @@ export function Dashboard({ onOpenFlow }: Props) {
       title="Dashboard de flujos"
       subtitle="Crea, organiza y visualiza cada proceso de venta."
       actions={
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => setDialogOpen(true)}
-        >
-          + Nuevo flujo
-        </button>
+        <>
+          {canEdit && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => setDialogOpen(true)}
+            >
+              + Nuevo flujo
+            </button>
+          )}
+          <button type="button" className="btn btn-ghost" onClick={onLogout}>
+            Cerrar sesión
+          </button>
+        </>
       }
     >
       {loading ? (
@@ -56,6 +65,7 @@ export function Dashboard({ onOpenFlow }: Props) {
           <button
             type="button"
             className="btn btn-primary"
+            disabled={!canEdit}
             onClick={() => setDialogOpen(true)}
           >
             Crear el primero
@@ -68,17 +78,21 @@ export function Dashboard({ onOpenFlow }: Props) {
               key={flow.id}
               flow={flow}
               onOpen={() => onOpenFlow(flow.id)}
-              onDelete={() => handleDelete(flow.id, flow.name)}
+              onDelete={
+                canEdit ? () => handleDelete(flow.id, flow.name) : undefined
+              }
             />
           ))}
         </div>
       )}
 
-      <CreateFlowDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        onCreate={createFlow}
-      />
+      {canEdit && (
+        <CreateFlowDialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          onCreate={createFlow}
+        />
+      )}
     </AppShell>
   );
 }

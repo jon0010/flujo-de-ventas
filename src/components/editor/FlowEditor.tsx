@@ -16,10 +16,12 @@ import { exportFlowToPdf } from "../../utils/exportFlowPdf";
 
 type Props = {
   flowId: string;
+  canEdit: boolean;
   onBack: () => void;
+  onLogout: () => void;
 };
 
-export function FlowEditor({ flowId, onBack }: Props) {
+export function FlowEditor({ flowId, canEdit, onBack, onLogout }: Props) {
   const {
     flow,
     loading,
@@ -41,6 +43,7 @@ export function FlowEditor({ flowId, onBack }: Props) {
   const [connectTo, setConnectTo] = useState<string | null>(null);
   const [canvasTool, setCanvasTool] = useState<CanvasTool>("select");
   const [exportingPdf, setExportingPdf] = useState(false);
+  const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -203,18 +206,31 @@ export function FlowEditor({ flowId, onBack }: Props) {
           <input
             className="flow-editor-title"
             value={flow.name}
-            onChange={(e) => updateMeta({ name: e.target.value })}
+            onChange={(e) => canEdit && updateMeta({ name: e.target.value })}
+            readOnly={!canEdit}
             aria-label="Nombre del flujo"
           />
           <input
             className="flow-editor-desc"
             value={flow.description}
-            onChange={(e) => updateMeta({ description: e.target.value })}
+            onChange={(e) =>
+              canEdit && updateMeta({ description: e.target.value })
+            }
+            readOnly={!canEdit}
             placeholder="Descripción del flujo"
             aria-label="Descripción del flujo"
           />
         </div>
         <div className="flow-editor-header-actions">
+          {canEdit && (
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => setIsEditMenuOpen((prev) => !prev)}
+            >
+              {isEditMenuOpen ? "Ocultar menú" : "Mostrar menú"}
+            </button>
+          )}
           <button
             type="button"
             className="btn btn-secondary"
@@ -223,60 +239,69 @@ export function FlowEditor({ flowId, onBack }: Props) {
           >
             {exportingPdf ? "Generando PDF…" : "Exportar PDF"}
           </button>
-          <CanvasToolSwitcher tool={canvasTool} onChange={handleToolChange} />
+          <CanvasToolSwitcher
+            tool={canvasTool}
+            onChange={handleToolChange}
+          />
+          <button type="button" className="btn btn-ghost" onClick={onLogout}>
+            Cerrar sesión
+          </button>
           {saving && <span className="save-indicator">Guardando…</span>}
         </div>
       </header>
 
-      <div className="flow-editor-bar">
-        <FlowToolbar
-          saving={saving}
-          nodes={flow.nodes}
-          selectedNodeId={selectedNodeId}
-          connectFrom={connectFrom}
-          connectTo={connectTo}
-          onAddNode={handleAddNode}
-          onDeleteNode={() => selectedNodeId && deleteNode(selectedNodeId)}
-          onFocusNode={handleFocusNode}
-          onConnect={handleConnect}
-          onStartConnectFrom={(id) => {
-            setConnectTo(null);
-            setConnectFrom(id);
-            setSelectedEdgeId(null);
-            toast.message("Modo conexión", {
-              description: `Haz clic en el nodo destino después de «${nodeTitle(id)}»`,
-            });
-          }}
-          onStartConnectTo={(id) => {
-            setConnectFrom(null);
-            setConnectTo(id);
-            setSelectedEdgeId(null);
-            toast.message("Modo conexión", {
-              description: `Haz clic en el nodo origen antes de «${nodeTitle(id)}»`,
-            });
-          }}
-          onCancelConnect={() => {
-            setConnectFrom(null);
-            setConnectTo(null);
-          }}
-        />
-
-        {selectedEdge ? (
-          <EdgeEditorPanel
-            edge={selectedEdge}
+      {canEdit && isEditMenuOpen && (
+        <div className="flow-editor-bar">
+          <FlowToolbar
+            saving={saving}
             nodes={flow.nodes}
-            onUpdate={(patch) => updateEdge(selectedEdge.id, patch)}
-            onDelete={handleDeleteEdge}
-            onClose={() => setSelectedEdgeId(null)}
+            selectedNodeId={selectedNodeId}
+            connectFrom={connectFrom}
+            connectTo={connectTo}
+            onAddNode={handleAddNode}
+            onDeleteNode={() => selectedNodeId && deleteNode(selectedNodeId)}
+            onFocusNode={handleFocusNode}
+            onConnect={handleConnect}
+            onStartConnectFrom={(id) => {
+              setConnectTo(null);
+              setConnectFrom(id);
+              setSelectedEdgeId(null);
+              toast.message("Modo conexión", {
+                description: `Haz clic en el nodo destino después de «${nodeTitle(id)}»`,
+              });
+            }}
+            onStartConnectTo={(id) => {
+              setConnectFrom(null);
+              setConnectTo(id);
+              setSelectedEdgeId(null);
+              toast.message("Modo conexión", {
+                description: `Haz clic en el nodo origen antes de «${nodeTitle(id)}»`,
+              });
+            }}
+            onCancelConnect={() => {
+              setConnectFrom(null);
+              setConnectTo(null);
+            }}
           />
-        ) : (
-          <EdgeLegend />
-        )}
-      </div>
+
+          {selectedEdge ? (
+            <EdgeEditorPanel
+              edge={selectedEdge}
+              nodes={flow.nodes}
+              onUpdate={(patch) => updateEdge(selectedEdge.id, patch)}
+              onDelete={handleDeleteEdge}
+              onClose={() => setSelectedEdgeId(null)}
+            />
+          ) : (
+            <EdgeLegend />
+          )}
+        </div>
+      )}
 
       <FlowCanvas
         flow={flow}
         tool={canvasTool}
+        editable={canEdit}
         selectedNodeId={selectedNodeId}
         selectedEdgeId={selectedEdgeId}
         connectFromId={connectFrom}
